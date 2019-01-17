@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config>
+  <modules>
+    <NVV_Instantsearch>
+      <active>true</active>
+      <codePool>local</codePool>
+      <version>0.1.0</version>
+       <extension_name><![CDATA[NVV Instant Search]]></extension_name>
+    </NVV_Instantsearch>
+  </modules>
+</config>

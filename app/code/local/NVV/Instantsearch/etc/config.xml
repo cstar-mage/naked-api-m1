@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <NVV_Instantsearch>
+      <version>1.2.0</version>
+    </NVV_Instantsearch>
+  </modules>
+  <frontend>
+    <routers>
+      <instantsearch>
+        <use>standard</use>
+          <args>
+            <module>NVV_Instantsearch</module>
+            <frontName>instantsearch</frontName>
+          </args>
+      </instantsearch>
+    </routers>
+		<layout>
+		  <updates>
+  			<instantsearch>
+  			  <file>instantsearch.xml</file>
+  			</instantsearch>
+		  </updates>
+		</layout>
+  </frontend>
+  <global>
+    <helpers>
+      <instantsearch>
+        <class>NVV_Instantsearch_Helper</class>
+      </instantsearch>
+    </helpers>
+  	<blocks>
+  	  <instantsearch>
+  		  <class>NVV_Instantsearch_Block</class>
+  	  </instantsearch>
+  	</blocks>
+    <resources>
+                     
+                <instantsearch_setup>
+                    <setup>
+                        <module>NVV_Instantsearch</module>
+                        
+                    </setup>
+                </instantsearch_setup>
+                <connection>
+                  <use>core_setup</use>
+                </connection>
+            
+    </resources>
+  </global>
+  <admin>
+       <routers>
+        
+             <adminhtml>
+              
+                <args>
+                   <modules><nvv_instantsearch after="Mage_Adminhtml">NVV_Instantsearch_Adminhtml</nvv_instantsearch></modules>
+                 </args>
+             </adminhtml>
+
+        </routers>
+        
+
+  </admin>
+  
+    <adminhtml>
+    
+    
+      <acl>
+ 
+        <resources>
+ 
+            <admin>
+ 
+                <children>
+ 
+                    <system>
+ 
+                        <children>
+ 
+                            <config>
+ 
+                                <children>
+ 
+                                    <instantsearch>
+ 
+                                        <title>Instant Search Configuration</title>
+ 
+                                    </instantsearch>
+ 
+                                </children>
+ 
+                            </config>
+ 
+                        </children>
+ 
+                    </system>
+ 
+                </children>
+ 
+            </admin>
+ 
+        </resources>
+ 
+    </acl>
+     
+     
+  </adminhtml>
+</config> 

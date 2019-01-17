@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tabs translate="label" module="base" >
+		<nvvbase>
+		<label><![CDATA[<div style="position: absolute;"><img id="nvv_block" src="" alt="" border="0" /></div>&nbsp;<script>
+            var n = SKIN_URL.indexOf("adminhtml");
+            $('nvv_block').src = SKIN_URL.substring(0, n) + "adminhtml/default/default/images/nvv/logo.png";
+            </script>]]></label>
+		<sort_order>123</sort_order>
+	</nvvbase>
+	</tabs>
+	
+</config>

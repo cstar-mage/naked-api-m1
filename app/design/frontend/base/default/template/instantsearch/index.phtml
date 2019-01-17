@@ -1,0 +1,125 @@
+<?php
+
+$catalogSearchHelper =  $this->helper('catalogsearch');
+?>
+ <?php if(Mage::helper('instantsearch')->getsearchurl()!='1') { ?>
+<form id="search_mini_form" action="<?php  echo $catalogSearchHelper->getResultUrl() ?>" method="get"><?php } ?>
+    <div class="input-box">
+      <?php if(Mage::helper('instantsearch')->getsearchurl()!='1') { ?>  <label for="search"><?php echo $this->__('Search:') ?></label><?php } ?>
+        <input id="search" type="search" name="<?php echo $catalogSearchHelper->getQueryParamName() ?>" value="<?php echo $catalogSearchHelper->getEscapedQueryText() ?>" class="input-text required-entry" maxlength="<?php echo $catalogSearchHelper->getMaxQueryLength();?>" placeholder="<?php echo $this->__('Search entire store here...') ?>" autocomplete="off"  />
+        <?php if(Mage::helper('instantsearch')->getsearchurl()!='1') { ?>
+        <button type="submit" title="<?php echo $this->__('Search') ?>" class="button search-button"><span><span><?php echo $this->__('Search') ?></span></span></button><?php } ?>
+    </div>
+
+  
+</form>
+<div class="clearfix"></div>
+<div id="searchcontent"></div>
+<script type="text/javascript">
+    
+        var instantsearch = new Instantsearch(
+        '<?php echo $this->getUrl('instantsearch/index') ?>',
+        
+        'search'
+    );
+    
+    jQuery(".closeme").click( function () {
+        
+        //jQuery('#search_mini_form').submit();
+        
+    });
+    
+    function delay(callback, ms) {
+      var timer = 0;
+      return function() {
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          callback.apply(context, args);
+        }, ms || 0);
+      };
+    }
+    
+    jQuery( "#search" ).keyup(delay(function(e) {
+        
+        var nvCode = e.keyCode;
+        console.log(nvCode);
+        switch (nvCode) { 
+            case 13: 
+                return false;
+        		break;
+            case 38:
+                return false; 
+        		break;
+            case 40:
+                return false; 
+        		break;
+            case 32:
+                return false; 
+        		break;
+            case 37:
+                return false; 
+        		break;
+            case 39:
+                return false; 
+        		break;
+            default:
+                instantsearch.search();  
+                break;    
+        }
+        console.log('Time elapsed!', this.value);               
+    }, 500));
+    
+    jQuery( document ).ready(function() {
+        jQuery('#getproduct').click(function(){
+            jQuery('.search-button').click();
+        
+        });
+    });
+    
+
+            jQuery("#search").keydown(function(e) {
+                
+                if (e.keyCode == 13) { // enter
+                    if (jQuery(".services").is(":visible")) {
+                        selectOption();
+                    } else {
+                        jQuery(".services").show();
+                    }
+                    
+                }
+                if (e.keyCode == 38) { // up
+                
+                    var selected = jQuery(".selected");
+                    jQuery(".services li").removeClass("selected");
+                    if (selected.prev().length == 0) {
+                        selected.siblings().last().addClass("selected");
+                    } else {
+                        selected.prev().addClass("selected");
+                    }
+                }
+                if (e.keyCode == 40) { // down
+                    var selected = jQuery(".selected");
+                    jQuery(".services li").removeClass("selected");
+                    if (selected.next().length == 0) {
+                        selected.siblings().first().addClass("selected");
+                    } else {
+                        selected.next().addClass("selected");
+                    }
+                }
+            });
+            
+            jQuery(".services li").mouseover(function() {
+                jQuery(".services li").removeClass("selected");
+                jQuery(this).addClass("selected");
+            }).click(function() {
+                selectOption();
+            });
+            
+            function selectOption() {
+                jQuery(".services").hide();
+            }      
+
+    
+    </script>
+   

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<NVV_Base>
+			<version>1.0.0</version>
+		</NVV_Base>
+	</modules>
+	<global>
+		<blocks>
+			<base>
+				<class>NVV_Base_Block</class>
+			</base>
+		</blocks>
+		<helpers>
+			<base>
+				<class>NVV_Base_Helper</class>
+			</base>
+		</helpers>
+		<template>
+	        <email>
+	            <nvv_Support_email module="reviewsplus">
+	                <label>NVV Support Email</label>
+	                <file>nvv_Support_email.html</file>
+	                <type>html</type>
+	            </nvv_Support_email>
+	        </email>
+	    </template>
+	</global>
+	<adminhtml>
+		<menu>
+			<NVV module="base">
+				<title>NVV Extensions</title>
+				<sort_order>71</sort_order>               
+				
+			</NVV>
+		</menu>
+		<acl>
+            <resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+                
+            </resources>
+        </acl>
+		<layout>
+			<updates>
+				<base>
+					<file>base.xml</file>
+				</base>
+			</updates>
+		</layout>
+		<translate>
+            <modules>
+                <NVV_Base>
+                    <files>
+                        <default>NVV_Base.csv</default>
+                    </files>
+                </NVV_Base>
+            </modules>
+        </translate>
+		
+    </adminhtml> 
+    <admin>
+        <routers>
+            <adminhtml>
+                
+                <args>
+                    <modules><nvv_base after="Mage_Adminhtml">NVV_Base_Adminhtml</nvv_base></modules>
+                    
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+	<frontend>
+	</frontend>
+	</config>

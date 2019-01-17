@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<config>
+    <sections>
+ 		<instantsearch translate="label" module="instantsearch">
+            <label>Instant Search Configuration</label>
+            <tab>nvvbase</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+				<catalog translate="label" module="instantsearch">
+					<label>General Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>0</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						
+						<searchenabled translate="label">
+							<label>Disable Default Search!</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searchenabled>
+						
+						<searcshortdescription translate="label">
+							<label>Account ID</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>3</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searcshortdescription>
+						<searchdetaildescription translate="label">
+							<label>Feed</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>4</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searchdetaildescription>
+						<searchproducttag translate="label">
+							<label>Signature</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>5</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searchproducttag>
+						<searchproductlimit translate="label">
+							<label>Product Limit</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>6</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searchproductlimit>
+                        <searchproductthumb translate="label">
+							<label>Product Thumbnail Width</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>7</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searchproductthumb>
+						<searchproductlimitpage translate="label">
+							<label>Product Limit On Search Page</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>8</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searchproductlimitpage>
+
+					</fields>
+				</catalog>  				     
+            </groups>                        
+        </instantsearch>
+    </sections>
+</config>

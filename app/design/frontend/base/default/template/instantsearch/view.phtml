@@ -1,0 +1,237 @@
+<?php  
+
+$limit = urlencode(Mage::getStoreConfig('instantsearch/catalog/searchproductlimit'));
+$account_id = urlencode(Mage::getStoreConfig('instantsearch/catalog/searcshortdescription'));
+$feed = urlencode(Mage::getStoreConfig('instantsearch/catalog/searchdetaildescription'));
+$signature = urlencode(Mage::getStoreConfig('instantsearch/catalog/searchproducttag')); 
+$thumbwidth = urlencode(Mage::getStoreConfig('instantsearch/catalog/searchproductthumb')); 
+$searchproductlimitpage = urlencode(Mage::getStoreConfig('instantsearch/catalog/searchproductlimitpage')); 
+			if($this->getRequest()->getPost('id')!="")
+			{ //if the user click on small product thumbnail
+				$products = Mage::getModel('catalog/product')->load($this->getRequest()->getPost('id'));
+			               
+				return $products;
+			}
+			if($this->getRequest()->getPost('q')=="")
+			{  //if the search query is null
+				$products = "";
+			               
+				return $products;
+			}
+			
+
+			
+$query = urlencode($this->getRequest()->getPost('q')); 
+
+if($limit > 0) 
+    $url = "https://experiments.syteapi.com/search/items?q=$query&account_id=$account_id&feed=$feed&sig=$signature&limit=$limit";
+else
+    $url = "https://experiments.syteapi.com/search/items?q=$query&account_id=$account_id&feed=$feed&sig=$signature";
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => $url,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_SSL_VERIFYHOST => false,
+  CURLOPT_SSL_VERIFYPEER => false,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache"
+  ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  ?>
+    <div class="product_instant_search_popup clearfix">
+      <a href="javascript:void(0)" onclick="removedd()"><img src="<?php echo $this->getSkinUrl('images/NVV_instantsearch/close.png');?>" alt="" class="close"></a>
+      <p><?php echo $this->__('Sorry, no Product(s) Found!'). ' Error: '. $err; ?></p>
+    </div>
+    <?php  
+} else {
+    
+  $nvdata = json_decode($response, true);
+  
+  
+  if(count($nvdata) and $nvdata!="") 
+  {
+      
+      $nvdata=array_slice($nvdata,0,$limit);
+      ?>
+      <div id="getproduct" style="cursor: pointer;">
+
+        <div class="product_instant_search_popup clearfix">
+        
+        <div class="services">
+        <div class="items">
+        <a class="closeme" href="javascript:void(0)" onclick="removedd()"><img src="<?php echo $this->getSkinUrl('images/NVV_instantsearch/close.png');?>" alt="" class="close"></a>
+        <ul>  
+      <?php
+      
+      
+      $x=100;
+      foreach($nvdata as $value)
+      {
+
+        //echo $value->original_data->name;
+        if($x == '100')
+            echo "<li class='selected'>";
+        else
+            echo "<li>";
+        ?>
+        
+        <div id="currproduct" class="class<?php echo $x;?>">
+        <a href="<?php echo ($value['original_data']['product _URL']) ?>">
+            <div class="product_view">
+                  
+                 <div class="large_thumbnail" >
+                   <img src="<?php echo ($value['imageUrl']);?>" width="<?php echo $thumbwidth;?>"  alt="<?php echo ($value['original_data']['title/product name']);?>">
+                 </div>
+                  
+                    <div class="prod_detail">
+                        <p><?php echo ($value['original_data']['title/product name']);?></p>
+                        <span><?php echo ($value['price']);?></span>
+                        <div id="loader"></div>
+                    </div>
+            </div>
+        </a>
+        </div>
+        </li>
+      <?php
+      $x--;
+      }
+      ?>
+      </ul>
+      </div>
+      </div>
+        <a style="float: right;" href="<?php echo $this->getBaseUrl(); ?>/catalogsearch/result/?q=<?php echo $query; ?>">Show All</a>
+      </div>
+      
+    </div>
+    <?php    
+  }
+  
+  
+}
+
+/*
+$collection=$this->searchQuery();
+
+
+if(count($collection) and $collection!="") {
+
+if($this->checkk()==0)
+{ ?>
+ <div id="getproduct">
+
+<div class="product_instant_search_popup clearfix">
+      <a href="javascript:void(0)" onclick="removedd()"><img src="<?php echo $this->getSkinUrl('images/NVV_instantsearch/close.png');?>" alt="" class="close"></a>
+<?php 
+
+
+$a=1;
+foreach($collection as $coll) {
+if($a==1)
+{  $_product = Mage::getModel('catalog/product')->load($collection[0]);
+	?>
+<div id="currproduct">
+
+<div class="product_view">
+      
+     <div class="large_thumbnail" >
+       <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(280) ?>"  alt="<?php echo $this->escapeHtml($_product->getName()) ?>">
+     </div>
+      
+      <div class="prod_detail">
+        <h1><?php echo $this->escapeHtml($_product->getName()) ?></h1>
+        <h5><?php $key =  Mage::getSingleton('core/session')->getFormKey();;
+                     $price=$_product->getFinalPrice();
+             echo  Mage::helper('core')->currency($price,true,true);?></h5>
+        
+          <?php echo $this->__('QTY:') ?> <input maxlength="12" id="qty" name="qty" type="text" class="input_field" value="1"> <input name="" type="button" class="input_btn" onclick="addtocart('<?php  echo Mage::getBaseUrl();?>checkout/cart/add/product/<?php  echo $_product->getid();?>','form_key/<?php echo $key; ?>')" value="Add to Cart">
+      <div id="loader"></div>
+       <div class="over_view">
+
+         <h3><?php echo $this->__('Quick Description:') ?> <a href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('View Detail') ?></a></h3>
+         <p><?php echo  $_product->getShortDescription() ?>..</p>
+       </div>
+      </div>
+      </div>
+      </div>
+	<?php
+} $a++;}
+ ?>
+
+<div class="related">
+<ul>
+<?php $a=1;$collection=$this->searchQuery();
+foreach($collection as $product1)
+{ 
+$_product1 = Mage::getModel('catalog/product')->load($product1);
+	?>
+<li id="is-<?php echo $_product1->getid(); ?>"<?php if($a==1) { ?> class='active' <?php }?>>
+
+ <img src="<?php echo $this->helper('catalog/image')->init($_product1, 'small_image')->resize($this->getthumb()) ?>"  onclick="getpro('<?php echo $_product1->getid(); ?>','<?php echo $this->getUrl('instantsearch/index') ?>')"  />
+
+</li>
+
+<?php $a++; } ?>
+</ul>
+</div>
+</div>
+</div>
+<?php } else {
+	$_product=$this->searchQuery();
+	?>
+
+
+<div class="product_view" >
+<div class="large_thumbnail"  >
+       <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(280) ?>"  alt="<?php echo $this->escapeHtml($_product->getName()) ?>">
+     </div>
+      
+      <div class="prod_detail" >
+        <h1><?php echo $this->escapeHtml($_product->getName()) ?></h1>
+        <h5><?php $key =  Mage::getSingleton('core/session')->getFormKey();;
+                     $price=$_product->getFinalPrice();
+             echo  Mage::helper('core')->currency($price,true,true);?></h5>
+        
+          <?php echo $this->__('QTY:') ?> <input maxlength="12" id="qty" name="qty" type="text" class="input_field" value="1"> <input name="" type="button" class="input_btn" onclick="addtocart('<?php  echo Mage::getBaseUrl();?>checkout/cart/add/product/<?php  echo $_product->getid();?>','form_key/<?php echo $key; ?>')" value="Add to Cart">
+      <div id="loader"></div>
+       <div class="over_view">
+         <h3><?php echo $this->__('Quick Description:') ?> <a href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('View Detail') ?></a></h3>
+         <p><?php echo  $_product->getShortDescription() ?>..</p>
+       </div>
+      </div>
+</div>
+
+
+<?php }}else { ?>
+<div class="product_instant_search_popup clearfix">
+      <a href="javascript:void(0)" onclick="removedd()"><img src="<?php echo $this->getSkinUrl('images/NVV_instantsearch/close.png');?>" alt="" class="close"></a>
+      <p>
+
+      <?php echo $this->__('No Product Found') ?></p>
+      </div>
+<?php } ?>
+
+*/
+?>
+<script>
+    jQuery( document ).ready(function() {
+        jQuery('#getproduct').click(function(){
+            
+           // jQuery('.search-button').click();
+        
+        });
+    });
+</script>

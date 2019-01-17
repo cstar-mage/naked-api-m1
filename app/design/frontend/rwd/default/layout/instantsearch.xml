@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/NVV_instantsearch/style.css</stylesheet></action>
+            <action method="addCss"><stylesheet>css/NVV_instantsearch/theme-responsive.css</stylesheet></action>
+            <action method="addJs"><script>NVVinstantsearch/search.js</script></action>
+            <action method="addJs"><script>NVVinstantsearch/libs/modernizr.2.6.2.js</script></action>
+        </reference>
+        <reference name="header">
+            <block type="core/template" name="top.search" as="topSearch" template="instantsearch/index.phtml"/>
+        </reference>
+    </default>
+    <instantsearch_index_index>
+
+        <reference name="content">
+            <block type="instantsearch/index" name="instantsearch_index" template="instantsearch/view.phtml"/>
+        </reference>
+
+    </instantsearch_index_index>
+
+    <!-- Added by snipper1212 -->
+    <catalogsearch_result_index translate="label">
+        <remove name="search.result"></remove>
+
+        <reference name="content">
+            <block type="instantsearch/result" name="search.result.new" template="instantsearch/result.phtml">
+                <block type="instantsearch/product_list" name="search_result_list" template="instantsearch/list.phtml">
+                    <block type="core/text_list" name="product_list.name.after" as="name.after" />
+                    <block type="core/text_list" name="product_list.after" as="after" />
+                    <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                        <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                    </block>
+                    <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+                    <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+                </block>
+                <action method="setListOrders"/>
+                <action method="setListModes"/>
+                <action method="setListCollection"/>
+            </block>
+        </reference>
+    </catalogsearch_result_index>
+</layout>
